@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+//Controlleur pour administrer les utilisateur
 class UserController extends AbstractController{
    
 
@@ -82,7 +83,7 @@ class UserController extends AbstractController{
         
     }
 
-    
+    //Permet de lier un utilisateur à un compte
     /**
      * @IsGranted("ROLE_ADMIN")
      * @Route("/Utilisateur/Lier/{idU}", name="LierUser")
@@ -254,6 +255,7 @@ class UserController extends AbstractController{
         return $this->redirectToRoute('users');
     }
     
+    //Ecran principale lorsqu'un utilisateur général se connect
     /**
      * @IsGranted("ROLE_CHANTIER")
      * @Route("/technicien", name="bienvenue")

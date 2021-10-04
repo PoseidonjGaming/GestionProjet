@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-
+//Controlleur pour administrer les comptes
 class LoginController extends AbstractController
 {
     /**
@@ -44,6 +44,7 @@ class LoginController extends AbstractController
         $form->handleRequest($request);
        	$error="";
 
+        //Permet la vérification de la complexité du mot de passe
         if($form->isSubmitted() && $form->isValid())
         {if(preg_match("#([\d\w\s\@\#\!\^ \$\(\)\[\]\{\}\?\+\*\.+]){8}#",$compte->getPassword())){
              $encoded = $encoder->encodePassword($compte, $compte->getPassword());

@@ -28,11 +28,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Routing\Annotation\Route;
 
-
+//Controlleur pour enregistrer une intervention
 class InterventionController extends AbstractController
 {
    
-
+    //sélection de l'utilisateur (avec un compte général)
     /**
      * @IsGranted("ROLE_CHEF_CHANTIER")
      * @Route("/selection_utilisateur", name="listuser")
@@ -79,7 +79,7 @@ class InterventionController extends AbstractController
     
 
 
-
+    //Enregistrement de l'intervention (avec un compte général)
     /**
      * @IsGranted("ROLE_CHANTIER")
      * @Route("/utilisateur/{idU}/projet/{idP}/famille/{idF}/tache/{idT}/ajout_intervention", name="ajouterIntervention")
@@ -153,6 +153,7 @@ class InterventionController extends AbstractController
         
     }
 
+    //Visualisation de toutes les interventions
     /**
      * @IsGranted("ROLE_CHEF_CHANTIER")
      * @Route("/Interventions", name="Interventions")

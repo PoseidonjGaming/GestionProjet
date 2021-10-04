@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-
+//Controlleur pour administrer les tâches
 class TacheController extends AbstractController
 {
     /**
@@ -369,6 +369,7 @@ class TacheController extends AbstractController
     }
 
 
+    //Permet de créer un projets depuis un fichier excel(LibreOffice ou Microsoft Excel)
     /**
      *@IsGranted("ROLE_ADMIN")
      * @Route("/projet/{idP}/import_tache/{nom}", name="importTache")

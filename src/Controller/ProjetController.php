@@ -65,7 +65,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
-
+//Controlleur pour administrer les projets
 class ProjetController extends AbstractController
 
 {    
@@ -493,7 +493,7 @@ class ProjetController extends AbstractController
     }
 
 
-
+    //Permet d'archiver les projets terminés (de les exporter)
     /**
 
      * @IsGranted("ROLE_ADMIN")
