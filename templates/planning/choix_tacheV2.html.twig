@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% block title %}Choix de la tache{% endblock %}
+{% block body %}
+
+
+<div class="row">
+ <div class="col-md-3">
+<div class="card-body" style="width: 18rem;"> 
+ {{ block('image',  "intervention/choix_projet.html.twig") }}
+ </div>
+  <a class="btn btn-secondary" href="{{ path('observerPlanning',{'idU':idU}) }}">Voir le planning actuel</a>
+</div>
+
+
+<div class="col-md-9">
+<form action="/planning/voirUser/{{idU}}" method="get">
+<h2>Choix de la tâche</h2>  <input class="btn btn-primary" type="submit" value="Créer le planning"><p></p>
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Projet</th>
+            <th>Famille de tâches</th>
+            <th>Tache</th>
+            <th>Nombre d'heures attribuées</th>
+            <th><label for="checkall"><input type="checkbox" id='checkall' name="checkall"> Tout cocher</label></th>
+            
+        </tr>
+    </thead>
+    <tbody>
+       
+        {% for uneTache in taches %}
+            
+            <tr>
+                <td><label for="{{uneTache.id}}">{{uneTache.famille.idprojet.nom}}</label></td>
+                <td><label for="{{uneTache.id}}">{{uneTache.famille.nom}}</label></td>
+                <td><label for="{{uneTache.id}}">{{uneTache.nom}}</label></td>
+                <td><input type="checkbox" id='{{uneTache.id}}' name="{{uneTache.id}}"{% if uneTache.famille.nom == "Autres_" ~ uneTache.famille.idprojet.nom %}checked{% endif %}></td>
+                <td><input type="number" min=0 placeholder=0  id='{{uneTache.id}}T' name="{{uneTache.id}}T"></td>
+            </tr>
+        {% endfor %}
+       
+    </tbody>
+</table>
+
+</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    
+   $('#checkall').change(function () {
+    if($( this ).prop( "checked" )){$('input:checkbox').attr('checked','checked');} 
+    else $('input:checkbox').removeAttr('checked');
+        
+   
+}); 
+
+</script>
+{% endblock %}

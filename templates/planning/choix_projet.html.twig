@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block title %}Choix du projet{% endblock %}
+{% block body %}
+
+
+<a class="btn btn-primary btn-lg" href="{{ path('listUtilisateurs',{'modif': modif, 'idPl': idPl}) }}">Retour</a>
+<div class="row">
+ <div class="col-md-3">
+<div class="card-body" style="width: 18rem;"> 
+{% block image %}     
+            <img class="card-img-top" src="/photo/{{user.photo}}" />
+            <h4>{{user.nom}}  {{user.prenom}}</h4>
+{% endblock %}
+</div>
+<a class="btn btn-secondary" href="{{ path('observerPlanning',{'idU':user.id}) }}">Voir le planning</a>
+</div>
+
+<div class="col-md-9">
+    <h2>Choix du projet</h2>
+    <div class="row">
+    {% for unprojet in projets %}
+        <div class="col-md-6">
+            <div class="card mb-4" style="width: 18rem;">
+              <div class="card md-4">
+               {% if app.user.roles[0] == "ROLE_ADMIN" %}
+                <a class="btn btn-primary btn-lg"  href="{{ path('choixTache', {'idU': idU, 'idP': unprojet.id, 'modif': modif, 'idPl': idPl }) }}">{{unprojet.nom}}</a>
+                {% else %}
+                <div class="card-body" style="width: 18rem;" style="height: 29rem">
+                  {{block('card','intervention/choix-projet.html.twig')}}
+                  <a class="btn btn-primary btn-lg" href="{{ path('choixTaches',{'idU': user.id, 'idP': unprojet.id}) }}">Choisir</a>
+                </div>
+          {% endif %}
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+    </div>
+  </div>  
+</div>
+{% endblock %}

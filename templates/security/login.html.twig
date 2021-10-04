@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<!DOCTYPE html>
+<html>
+    <style>
+    .conn{margin: 10% 40%;}
+     .image{margin: 3% 2%  2% 10%;}
+     .btn{margin: 2% 2% ; background: #0275d8; color:#F5F5F5; max-width: 800px; width: 95%; }
+    </style>
+    <head>
+        <meta charset="UTF-8">
+        <title>Connexion</title>
+        <link rel="icon" type="image/png" sizes="16x16" href="/photo/franck_roy.svg">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    
+
+
+<body style="background:#003150;">
+    <div class="conn">
+        <div class="card mb-4" style="width: 20rem;">
+            <div class="card-body">
+             <div class="image" style="width: 14rem; height:8rem;">                        
+              <img class="card-img" src="/photo/franck_roy.png" /></div>
+               <div class="col mb-4">
+                <form method="post">
+                    <div class="row">
+                   
+                            {% if error %}
+                                <div class="alert alert-danger">{{ error.messageKey|replace({"Invalid credentials.": "Le mot de passe est incorrect"}) }}</div>
+                            {% endif %}
+                            
+                            <h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
+                            <label for="inputUsername">Nom d'utilisateur: </label>
+                            <div class="input-group mb-3"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1"><i class="bi bi-person-fill"></i></span></div><input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus></div>
+                            <label for="inputPassword">Mot de passe: </label>
+                            <div class="input-group mb-3"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1"><i class="bi bi-key-fill"></i></span></div><input type="password" name="password" id="inputPassword" class="form-control" required></div>
+
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+    {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> Remember me
+            </label>
+        </div>
+    #}
+                            <p></p>
+                            <button class="btn" type="submit" >
+                                Connexion 
+                            </button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+{% endblock %}

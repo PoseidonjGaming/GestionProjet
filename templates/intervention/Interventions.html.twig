@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+ 
+{% block title %}Liste des interventions{% endblock %}
+ 
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+{% if InterventionPage.isSorted('date') and InterventionPage.getDirection()=="desc" %}
+    {% set ordreDate = "Z...A" %}
+{% else %}
+    {% set ordreDate = "A...Z" %}
+{% endif %}
+{% if InterventionPage.isSorted('tache.famille.id_Projet.nom') and InterventionPage.getDirection()=="desc" %}
+    {% set ordreProjet = "Z...A" %}
+{% else %}
+    {% set ordreProjet = "A...Z" %}
+{% endif %}
+{% if InterventionPage.isSorted('tache.famille.nom') and InterventionPage.getDirection()=="desc" %}
+    {% set ordreFamille = "Z...A" %}
+{% else %}
+    {% set ordreFamille = "A...Z" %}
+{% endif %}
+{% if InterventionPage.isSorted('tache.nom') and InterventionPage.getDirection()=="desc" %}
+    {% set ordreTache = "Z...A" %}
+{% else %}
+    {% set ordreTache = "A...Z" %}
+{% endif %}
+{% if InterventionPage.isSorted('Le_User.nom') and InterventionPage.getDirection()=="desc" %}
+    {% set ordreUser = "Z...A" %}
+{% else %}
+    {% set ordreUser = "A...Z" %}
+{% endif %}
+<h2>Liste des interventions {% if app.user.getRoles()[0] == "ROLE_CHANTIER" %} pour {{app.user.user.nom}} {{app.user.user.prenom}} {% endif %}</h2>
+<div class="row">
+    <div class="col-md-4 ">     
+        {% if app.user.roles[0] == "ROLE_CHANTIER" %}
+            <a class="btn btn-primary" href="{{ path('bienvenue') }}" role="button">Retour</a>
+            <a class="btn btn-success" href="{{ path('choixProjets',{'idU':app.user.user.id}) }}">Ajouter une intervention</a>
+        {% elseif app.user.roles[0] == "ROLE_ADMIN" %}
+            <a class="btn btn-success" href="{{ path('listuser') }}">Ajouter une intervention</a>
+            <a class="btn btn-secondary" href="{{ path('export',{'idU': idU, 'date': date, 'idT': idT, 'idF':idF, 'idP':idP}) }}" role="button">Exporter les données</a>
+        {% else %}  
+         <a class="btn btn-success" href="{{ path('listuser') }}">Ajouter une intervention</a>
+        {% endif %}
+        
+    </div>
+</div>
+    <p></p>
+<table class="table table-striped table-hover">
+    <thead class="table-light">
+        <tr>
+            <th>Num</th>
+            <th>Temps passé</th>
+            <th>Date d'intervention {% if not Intervention is empty and date == "null" %}{{ knp_pagination_sortable(InterventionPage, (ordreDate), 'date') }} {% endif %}</th>
+            <th>Projet {% if not Intervention is empty and idP == "null"%} {{ knp_pagination_sortable(InterventionPage, (ordreProjet), 'tache.famille.id_Projet.nom') }} {% endif %}</th>
+            <th>Famille {% if not Intervention is empty and idF == "null" %} {{ knp_pagination_sortable(InterventionPage, (ordreFamille), 'tache.famille.nom') }} {% endif %}</th>
+            <th>Tache {% if not Intervention is empty and idT == "null" %} {{ knp_pagination_sortable(InterventionPage, (ordreTache), 'tache.nom') }} {% endif %}</th>
+            <th>Participants {% if not Intervention is empty  and idU == "null" %} {{ knp_pagination_sortable(InterventionPage, (ordreUser), 'Le_User.nom') }} {% endif %}</th>
+            <th>Description</th>        
+            <th>Durée totale des interventions sélectionnées:</th>
+            <th>{{dureeTot}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>{% if app.user.getRoles()[0] == "ROLE_ADMIN" or app.user.getRoles()[0] == "ROLE_CHEF_CHANTIER"%}
+                {{form_start(form_interSearch,{'action': path('Interventions')})}}
+            {% else %}
+              {{form_start(form_interSearch,{'action': path('ListeInter', {'idU': idU})})}}
+            {% endif %} 
+            <th></th>
+            <th></th>
+            <th >{{form_widget(form_interSearch.date)}}</th>
+            <th>{{form_widget(form_interSearch.Projet)}}</th>
+            <th>{{form_widget(form_interSearch.Famille)}}</th>
+            <th>{{form_widget(form_interSearch.Tache)}}</th>
+            {% if app.user.getRoles()[0] =="ROLE_CHANTIER"  %}
+            <th>{{form_widget(form_interSearch.Le_User,{'disabled':'disabled'})}}</th>
+            {% else %}
+            <th>{{form_widget(form_interSearch.Le_User)}}</th>
+            {% endif %} 
+            <th></th>
+            <th>{{form_row(form_interSearch.Recherche)}}</th>
+            <th><a class="btn btn-secondary" href="{{ path('Interventions') }}" role="button">Annuler la recherche</a></th>
+            {{form_end(form_interSearch)}}
+        </tr>
+    {% if InterventionPage is empty %}<p>Il n'y a aucune intervention correspondant à votre recherche</p>{% endif %}
+    {% set num = 1 %}
+        {% for uneIntervention in InterventionPage %}
+            <tr>
+                <td>{{num}}</td>
+                <td>{{uneIntervention.duree|date("H:i:s")}}</td>
+                <td> {{uneIntervention.date|date("d/m/Y")}} </td>
+                <td> {{ uneIntervention.tache.famille.idprojet.nom }}</td>
+                <td> {{ uneIntervention.tache.famille.nom }}</td>
+                <td> {{ uneIntervention.tache.nom }}</td>
+                <td> {{ uneIntervention.Leuser.nom }} {{ uneIntervention.Leuser.prenom }}</td>
+                <td><textarea readonly="true"> {{ uneIntervention.pb }}</textarea></td>
+              
+                <td><a class="btn btn-warning" href="{{ path('modifierIntervention', {'id': uneIntervention.id }) }}" role="button"> Modifier </a>
+                <a class="btn btn-warning" href="{{ path('changerTache', {'idU': uneIntervention.LeUser.id, 'idI': uneIntervention.id}) }}" role="button"> Changer la tache </a></td>
+                <td><a class="btn btn-danger delete" href="{{ path('supprimerIntervention', {'id': uneIntervention.id ,'idU': idU}) }}" data-toggle="modal" data-target="#modal_supprimer{{uneIntervention.id}}" role="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                    </svg> Supprimer</a></td>
+            </tr>
+            <div class="modal fade" id="modal_supprimer{{uneIntervention.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Suppression de l'intervention</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Êtes-vous sur de vouloir supprimer cette intervention ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="modalNon">Non</button>
+                                <a class="btn btn-danger delete" href="{{ path('supprimerIntervention', {'id': uneIntervention.id}) }}" role="button" id="modalOui">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                    </svg>Oui
+                                </a>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            {% set num = num + 1 %}
+        {% endfor %}
+       
+    </tbody>
+</table>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {{ knp_pagination_render(InterventionPage) }}
+    </ul>
+</nav>
+{% endblock %}
+
+
+

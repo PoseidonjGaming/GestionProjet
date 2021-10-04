@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+ 
+{% block title %}Liste des clients{% endblock %}
+ 
+{% block body %}
+<style>
+    .center {text-align: left; font: 18px/1.5 sans-serif;}
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+
+<h1>Liste des clients</h1>
+<a class="btn btn-success" href="{{ path('ajouterClient') }}" role="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+  <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+</svg> Ajouter un client</a>
+<p></p>
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <th>Nom</th>
+        <th>Prenom</th>
+
+        <th><th>       
+    </thead>
+    <tbody>
+        {% for unclient in clients %}
+            <tr>
+                <td > {{unclient.nom}}</td>
+                 <td > {{unclient.prenom}}</td>
+                 <td><a class="btn btn-warning" href="{{ path('modifierClient', {'id': unclient.id }) }}" role="button">Modifier </a>
+                <a class="btn btn-danger delete" href="{{ path('supprimerClient', {'id': unclient.id }) }}" data-toggle="modal" data-target="#modal_supprimer{{unclient.id}}" role="button" >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                        </svg> Supprimer</a></td>
+<div class="modal fade" id="modal_supprimer{{unclient.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Suppression du client {{unclient.nom}} {{unclient.prenom}} </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sur de vouloir supprimer ce client ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="modalNon">Non</button>
+        <a class="btn btn-danger delete" href="{{ path('supprimerClient', {'id': unclient.id }) }}" role="button" id="modalOui">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+            </svg>Oui
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+            </tr>                   
+        {% endfor %}        
+    </tbody>
+</table>
+{% endblock %}

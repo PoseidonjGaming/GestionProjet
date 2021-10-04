@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block title %}Choix de la tache{% endblock %}
+{% block body %}
+ {% if app.user.roles[0] == "ROLE_ADMIN"%}
+<a class="btn btn-primary btn-lg" href="{{ path('selectionFamille', {'idU':idU, 'idP':idP}) }}">Retour</a>
+{% else %}
+<a class="btn btn-primary btn-lg" href="{{ path('choixProjets', {'idU':idU, 'idP':idP}) }}">Retour</a>
+{% endif %}
+<div class="row">
+ <div class="col-md-3">
+<div class="card-body" style="width: 18rem;"> 
+ {{ block('image',  "intervention/choix_projet.html.twig") }}
+ <h5>Projet: {{projet.nom}}</h5>
+ {% if famille is defined %}
+ <h5>Famille de taches: {{famille.nom}}</h5>
+ {% endif %}
+ </div>
+</div>
+
+<div class="col-md-9">
+  <h2>Choisir une tache</h2>
+  <div class="row">
+    {% for uneTache in taches %}
+        <div class="col-md-6">
+           <br>
+            <div class="card mb-4" style="width: 18rem;">
+              <div class="card md-4">
+              {% if idF is defined %}
+              {% else %}
+              {% set idF = uneTache.famille.id %}
+              {% endif %}
+                 <a class="btn btn-primary btn-lg" href="{{ path('ajouterIntervention', {'idU': idU, 'idP': idP , 'idF': idF,'idT': uneTache.id}) }}">{{uneTache.nom}}</a>
+            </div>
+          </div><br>
+        </div>
+    {% endfor %}  
+    </div>
+  </div>  
+</div>
+
+
+{% endblock %}

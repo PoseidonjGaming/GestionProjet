@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+{% block title %}Tache{% endblock %}
+{% block body %}
+{% block tache %}
+
+   <div class="col mb-6">
+      <h2> {{ title_tache }}</h2>
+      {{form_start(form_tache)}}
+      {{form_row(form_tache.nom)}}
+      <label for="h">Durée estimée</label>
+      <input type="number" min=0 max=100 step=1 name="h" id="h">
+      <input type="number" min=0 max=59 step=30 name="mn" id="mn">
+      
+   </div>
+   <div class="col mb-4">
+      <br>{{form_row(form_tache.submit)}}</br>
+      <a class="btn btn-success" href="{{ path('ajoutFT', {'idP': idP}) }}" role="button">Terminer l'ajout des taches</a>
+      {{form_end(form_tache)}} 
+   </div>
+       
+
+{% endblock %}
+
+{% endblock %}

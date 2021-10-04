@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %}Choix de la tache{% endblock %}
+{% block body %}
+    <h2>Choisir une tache</h2>
+    <div class="row">
+    {% for unPlanning in planning %}
+        <div class="col-md-6">
+            <br>
+            <div class="card mb-4" style="width: 18rem;">
+                <div class="card md-4">
+                <a class="btn btn-primary btn-lg" href="{{ path('changerTache', {'idU': idU, 'idI': idI, 'idT': unPlanning.tache.id}) }}">{{unPlanning.tache.nom}}</a>
+            </div>
+          </div><br>
+        </div>
+    {% endfor %}  
+    </div> 
+
+
+{% endblock %}

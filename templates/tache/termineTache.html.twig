@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .champ { height:1000px; width:300px; font-size:1.5rem;}
+</style>
+
+
+{{ block('form',  "intervention/Intervention-form.html.twig") }}
+
+  <div class="col-sm-4">
+    <h2>La tache est-elle terminée?</h2>
+    <div class="row">
+    <div class="col-sm-3">
+    <a class="btn btn-success btn-lg" href="{{ path('FinirTacheUser',{'idT': tache.id, 'rep': 'oui'}) }}" role="button">Oui</a>
+    </div><div class="col-sm-6"><div>
+    <div class="col-sm-3">
+    <a class="btn btn-success btn-lg" href="{{ path('FinirTacheUser',{'idT': tache.id, 'rep': 'non'}) }}" role="button">Non</a></br>
+    </div>
+   </div>
+   </div>
+</div>
+{% endblock %}

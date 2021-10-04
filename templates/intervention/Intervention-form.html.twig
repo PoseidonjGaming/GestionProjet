@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{form_title}}{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .champ { height:1000px; width:300px; font-size:1.5rem;}
+</style>
+
+{% block form %}
+{% if app.user.user == null %}
+    <a class="btn btn-primary btn-lg" href="{{ path('choixTaches', {'idF':idF, 'idP':idP, 'idU':idU }) }}">Retour</a>
+{% else %}
+    <a class="btn btn-primary btn-lg" href="{{ path('bienvenue') }}">Retour</a>
+{% endif %}
+<div class="row">
+    <div class="col-sm-3">
+        <div class="card-body" style="width: 20rem;"> 
+            {{ block('image',  "intervention/choix_projet.html.twig") }}
+                <h5>Projet: {{projet.nom}}</h5>
+                <h5>Famille de taches: {{famille.nom}}</h5>
+                <h5>Tache: {{tache.nom}}</h5>
+            </div>
+        </div>
+    <div class="col-sm-5">
+        <div class="example-wrapper">
+            <h2>{{ form_title }}</h2>           
+            <div class="champ"> 
+              {{ form_start(form_Intervention)}}
+              <p>{{form_row(form_Intervention.duree,{'label': 'Durée(en heures):'})}}</p>
+              <p>{{form_row(form_Intervention.date,{'label': "Date d'intervention:"})}}</p>
+              <p>{{form_row(form_Intervention.pb,{'label': 'Description:'})}} </p>
+              <p><label for="finir">La tache est-elle finie?</label>   <input type="checkbox" id='finir' name="finir"></p>
+              <p>{{ form_end(form_Intervention) }}</p></br>
+              <p><a class="btn btn-success btn-lg" href="{{ path('listuser') }}" role="button">Terminer l'ajout des interventions</a><p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</div>
+{% endblock %}
+

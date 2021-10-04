@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+ 
+{% block title %}Bienvenue{% endblock %}
+ 
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<h1>Bienvenue {{app.user.user.nom}} {{app.user.user.prenom}} !</h1>
+<div class="row">
+    <div class="col-md-3">
+      <a class="btn btn-secondary" href="{{ path('ListeInter', {'idU':app.user.user.id}) }}" >Voir mes interventions</a>
+      <a class="btn btn-success" href="{{ path('choixProjets',{'idU':app.user.user.id}) }}">Ajouter une intervention</a>
+    </div>
+</div>
+<div class="row">
+      <div class="col-md-3">
+        <div class="card-body" style="width: 24rem;">    
+          <img class="card-img-top" src="/photo/{{app.user.user.photo}}" />
+        </div>
+      </div>
+  <div class="col mb-9">
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Projet</th>
+          <th>Tache</th>
+          <th>Temps estimé</th>
+          <th>Temps réalisé</th>
+          <th>Etat</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for unePlanningTache in planning %}
+         {% if unePlanningTache.user == app.user.user %}
+          <tr>     
+            <td>{{unePlanningTache.tache.famille.idprojet.nom}}</td>
+            <td>{{unePlanningTache.tache.nom}}</td>
+            <td>{{unePlanningTache.dureeEst|date("H:i:s")}}</td>      
+            <td>{{total[loop.index0]}}</td>
+            <td bgcolor='{{couleurT[loop.index0]}}'>{{etatT[loop.index0]}}</td>
+            <td><a class="btn btn-primary" href="{{ path('ajouterIntervention',{'idU':app.user.user.id, 'idP': unePlanningTache.tache.famille.idprojet.id, 'idF':unePlanningTache.tache.famille.id, 'idT': unePlanningTache.tache.id}) }}">Ajouter une intervention</a></td>       
+        </tr>
+        {% endif %}
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

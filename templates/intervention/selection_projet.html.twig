@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Choix de la tache{% endblock %}
+{% block body %}
+<a class="btn btn-primary btn-lg" href="{{ path('listUser') }}">Retour</a>
+
+<div class="row">
+ <div class="col-md-3">
+<div class="card-body" style="width: 18rem;"> 
+ {{block('image',  "intervention/choix_projet.html.twig") }}
+ </div>
+ </div>
+ <div class="col-md-7">
+ <planning>
+ <div>
+ </div>
+<div class="row">
+{% for unProjet in projets %}
+        <div class="col-md-4">
+           <br>
+            <div class="card mb-4" style="width: 18rem;">
+              <div class="card md-4">
+                 <a class="btn btn-primary btn-lg"  href="#">{{unProjet.nom}}</a>
+            </div>
+          </div><br>
+        </div>
+    {% endfor %}

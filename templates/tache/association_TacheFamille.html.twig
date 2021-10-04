@@ -1,0 +1,90 @@
+{% extends "base.html.twig" %}
+{% block title %}Famille{% endblock %}
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    .tache { height:123px;  }
+</style>
+
+<div class='row'>
+    <div class="col-sm-12">
+{{block('card', 'projet/ajout.html.twig')}}
+    </div>
+</div>
+    <p></p>
+<div class="row">
+    <div class="col-sm-5">  
+        {{block('famille','famille_tache/familleTache-form.html.twig')}}
+        {{ block('famille1',  "famille_tache/projetFamille.html.twig") }}
+    </div>
+    <div class="col-sm-7">
+        <div class="tache">
+            <div class="row">
+                {{ block('tache',  "tache/tache-form.html.twig") }}
+            </div>
+        </div>
+            <h4>Taches de la famille {{famille.nom}} pour le projet {{projet.nom}}</h4>
+            <p></p>
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <th>Nom</th>
+                    <th>Etat</th>
+                    <th>Durée estimée</th>
+                    <th>Durée réalisée</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    {% set index = 0 %}
+                    {% for unetache in taches %}
+                   
+                     <tr>  
+                        <td> {{unetache.nom}}</td>
+                        <td bgcolor="{{couleurT[loop.index0]}}"> <a>{{etatT[loop.index0]}}</a></td>
+                        <td>{{(unetache.dureeEst)}}</td>
+                        <th>{{unetache.dureeRel}}</th>
+                        <td>{% if unetache.fini == false %}
+                                <a href="{{ path('FinirTache', {'idP':idP , 'idF': idF ,'id': unetache.id, 'rep':"oui" }) }}" class="btn btn-success">Finir</a>
+                            {% else %}
+                                <a href="{{ path('FinirTache', {'idP':idP , 'idF': idF ,'id': unetache.id, 'rep': "non" }) }}" class="btn btn-secondary">Rétablir</a>
+                            {% endif %}</td>
+                        <td><a href="{{path('InterventionsT',{'idT':unetache.id})}}"  class="btn btn-primary" >Voir les interventions</td> 
+                            <td><a href="{{ path('modifierTache', {'idP':idP , 'idF': idF ,'id': unetache.id }) }}" class="btn btn-warning">Modifier
+                              <a class="btn btn-danger delete" href="{{ path('supprimerTache', {'idP':idP , 'idF': idF ,'id': unetache.id }) }}" data-toggle="modal" data-target="#modal_supprimer_tache{{unetache.id}}" role="button">  
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                </svg> Supprimer</a>
+                            </td></a>
+                        </tr>
+                        <div class="modal fade" id="modal_supprimer_tache{{unetache.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Suppression de la tache {{unetache.nom}}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Êtes-vous sur de vouloir supprimer cette tâche ?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                                        <a class="btn btn-danger delete" href="{{ path('supprimerTache', {'idP':idP , 'idF': idF ,'id': unetache.id }) }}"  role="button" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                            </svg>Oui
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% set index = index + 1 %}
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+{% endblock %}

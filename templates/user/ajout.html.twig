@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{form_title}}{% endblock %}
+
+{% block body %}
+
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<a class="btn btn-primary" href="{{ path('users') }}" role="button" style="width:80px">Retour<a>
+
+<div class="example-wrapper">
+<h2>{{ form_title }}</h2>  
+ 
+<div class="row">
+    <div class="col-md-6">
+    {% if path == 'modifierUser' %}
+        {{form_start(form_user,{'action': path(path , {'id': id})})}}
+    {% else %}
+        {{form_start(form_user,{'action': path(path)})}}
+    {% endif %}
+                <p>Nom: {{form_widget(form_user.nom)}}</p>
+                <p>Prenom: {{form_widget(form_user.prenom)}}</p>
+                <p>{{form_widget(form_user.photo)}}</p><h6>{{error}}</h6>
+                <p> {{form_widget(form_user.Valider)}}<p>
+            </div>
+    {% if path !="ajouterUser" %}
+    <div class="col-sm-3">
+        <div class="card mb-4" style="width: 18rem;">            
+            <img class="card-img-top" src="/photo/{{photo}}" id="photo" name="photo" alt="Aucune photo n'a été sélectionnée pour cet utilisateur"/>
+              <a class="btn btn-danger" href="{{ path('supprPhoto', {'idU': user.id }) }}" role="button" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                </svg> Supprimer</a>
+        </div>
+    </div>
+    {% endif %}
+    </div>
+    {{form_end(form_user)}}
+</div>
+
+{% endblock %} 

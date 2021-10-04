@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+ 
+{% block title %}Projet{% endblock %}
+ 
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+{% block card %}
+<div class="card mb-12" style="height: 14rem;"> 
+         <div class="card-body">
+         {% if not ajout is defined %}
+            {{form_start(form_projet,{'action': path('modifierProjet',{'id': idP})})}}
+        {% else %}
+            {{form_start(form_projet,{'action': path('ajouterProjet')})}}
+        {% endif %}
+                <div class="card-body row">
+                <div class="col mb-3">
+                    <p><Font size="4"><B>Client:</B></Font> <Font size="3">{{form_widget(form_projet.Client)}} </Font> </p>
+                    <p> <Font size="4"><B>Projet:</B></Font> <Font size="3">{{form_widget(form_projet.nom)}} </Font></p>
+                    <p><Font size="4"><B>Avancee:</B></Font> <Font size="3">{{form_widget(form_projet.avancee)}} </Font> </p>
+                    </div>
+                    <div class="col mb-3">
+                   
+                    <p><Font size="4"><B>Date de livraison:</B></Font> <Font size="3">{{form_widget(form_projet.date_livraison)}} </Font> </p>
+                     {{form_end(form_projet)}}
+                    </div>
+                    <div class="col mb-3"><p><Font size="4"><B>Créé par:</B> </Font> <Font size="3">{{projet.createurId.username}}</Font></p>
+                     <p><Font size="4"><B>Le: </B></Font>   <Font size="3">{{projet.datecrea| date("d/m/Y")}}</Font></p>
+                
+                     </div>
+                     {% if ajout is defined %}
+                     {% else %}
+                    <div class="col mb-3">
+                     <p>  <a class="btn btn-primary" href="{{ path('importer', {'idP': idP }) }}" >
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1h-2z"/>
+                    <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 1.707V10.5a.5.5 0 0 1-1 0V1.707L5.354 3.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                </svg>Importer un fichier  </a></p>
+                {% endif %}
+                 <p><a class="btn btn-success" href="{{ path('projets') }}" role="button">Terminer la réalisation du projet</a></p>
+                       </div>
+
+                    </div>
+                    </div>
+                    </div>
+                  
+{% endblock %}                                         
+{% endblock %}

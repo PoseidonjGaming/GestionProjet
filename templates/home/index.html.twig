@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #003150; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <div class="row">
+        <div class="card mb-4" style="width: 30rem;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div clas="row">
+                            <form method="post" action="/listuser" >
+                                <div class="col mb-4">
+                                    <label for="login">Identifiant
+                                        <input type="text" placeholder="Login" name="login" required>
+                                    </label>
+                                </div>
+                                <div class="col mb-4">
+                                    <label for="mdp">Mot de passe
+                                        <input type="password" placeholder="Mot de passe" name="mdp" required>
+                                    </label>
+                                    <input class="btn btn-primary" type="submit" name="valider" id="valid" value="Connexion">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+
+{% endblock %}

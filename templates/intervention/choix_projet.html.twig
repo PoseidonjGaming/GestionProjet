@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choix du projet{% endblock %}
+
+{% block body %}
+
+
+
+{% if app.user.roles[0] =='ROLE_CHANTIER' %}
+
+<a class="btn btn-primary btn-lg" href="{{ path('ListeInter', {'idU': user.id})  }}">Retour</a>
+
+{% else %}
+
+<a class="btn btn-primary btn-lg" href="{{ path('listuser') }}">Retour</a>
+
+{% endif %}
+
+
+
+<div class="row">
+
+  <div class="col-md-3">
+
+    <div class="card-body" style="width: 18rem;"> 
+
+      {% block image %}     
+
+        <img class="card-img-top" src="/photo/{{user.photo}}" />
+
+        <h4>{{user.nom}}  {{user.prenom}}</h4>
+
+      {% endblock %}
+
+    </div>
+
+  </div>
+
+
+
+<div class="col-md-9">
+
+  <h2>Choisir un projet</h2>
+
+  <div class="row">
+
+  {% set tour = 0 %}
+
+    {% for unprojet in projets %}
+
+    
+
+    <div class="col-md-3">
+
+      <div class="card mb-4" style="width: 18rem;">
+
+     
+
+        <div class="card-body" style="width: 18rem;" style="height: 29rem">
+
+         {% block card %}
+
+          <p>{% if unprojet.client != NULL %}Client: {{unprojet.client.nom}} {{unprojet.client.prenom}}{% endif %}</p>
+
+          <p>Projet: {{unprojet.nom}}</p>
+
+          <p>Durée totale: {{dureeRel[tour]}}</p>
+
+          <p>Durée estimée: {{dureeEst[tour]}}</p>
+
+          <p>Etat: </p>
+
+          <p>Date de livraison: {{unprojet.dateLivraison|date("d/m/Y")}}</p>
+
+          <p>
+
+            <div class="progress">
+
+              <div class="progress-bar" role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: {{unprojet.avancee}}%">{% if unprojet.avancee != 0 %}{{unprojet.avancee}}%{% endif %}</div>
+
+            </div>
+
+          </p>
+
+        </div>
+
+        {% endblock %}
+
+        {% if app.user.roles[0] == "ROLE_ADMIN" %}
+
+        <a class="btn btn-primary btn-lg" href="{{ path('selectionFamille',{'idU': user.id, 'idP': unprojet.id}) }}">Choisir</a>
+
+         {% else %}
+
+         <a class="btn btn-primary btn-lg" href="{{ path('choixTaches',{'idU': user.id, 'idP': unprojet.id}) }}">Choisir</a>
+
+         {% endif %}
+
+      </div>
+
+    </div>
+
+    {% set tour = tour + 1 %}
+
+    {% endfor %}
+
+        <a>{{message}}</a>
+
+    </div>
+
+  </div>  
+
+</div>
+
+{% endblock %}

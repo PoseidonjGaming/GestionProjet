@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+{% block title %}Projet{% endblock %}
+{% block projet %}
+{% block body %}
+        <h2>{{ title_projet }}{% if projet %} {{projet.nom}}{% endif %}</h2>
+        {{ form(form_projet) }}
+        
+{% endblock %}
+{% endblock %}

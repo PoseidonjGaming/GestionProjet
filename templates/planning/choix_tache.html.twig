@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block title %}Choix de la tache{% endblock %}
+{% block body %}
+<a class="btn btn-primary btn-lg" href="{{ path('selectionFamille', {'idU':idU, 'idP':idP}) }}">Retour</a>
+
+<div class="row">
+ <div class="col-md-3">
+<div class="card-body" style="width: 18rem;"> 
+ {{ block('image',  "intervention/choix_projet.html.twig") }}
+ <h5>Projet: {{projet.nom}}</h5>
+ </div>
+  <a class="btn btn-secondary" href="{{ path('observerPlanning',{'idU':idU}) }}">Voir le planning</a>
+</div>
+
+
+<div class="col-md-9">
+   <h2>Choix de la tâche</h2>
+    <div class="row">
+    {% for uneTache in taches %}
+        <div class="col-md-6">
+           <br>
+            <div class="card mb-4" style="width: 18rem;">
+              <div class="card md-4">
+                {% if idPl == 'nouveau' %}
+                  <a class="btn btn-primary btn-lg" href="{{ path('ajoutPlanning', {'idU': idU,  'idT': uneTache.id}) }}">{{uneTache.nom}}</a>
+                {% else %}
+                  <a class="btn btn-primary btn-lg" href="{{ path('modifierPlanning', {'idU': idU,  'idT': uneTache.id, 'idPl': idPl}) }}">{{uneTache.nom}}</a>
+                {% endif %}
+            </div>
+          </div><br>
+        </div>
+    {% endfor %}  
+    </div>
+  </div>  
+</div>
+
+
+{% endblock %}
